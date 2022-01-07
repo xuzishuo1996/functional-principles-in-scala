@@ -9,14 +9,18 @@ object RecFun extends RecFunInterface:
     //     print(s"${pascal(col, row)} ")
     //   println()
     
-    println("balance")
-    // // val chars = List('(',')',')','(');
-    // // println(chars)
-    // val chars1 = "())(".toList
-    // println(chars1)
-    // // print(s"${balance(col, row)} ")
-    // println()
-    balanceHelper("())(".toList, 0, 0)
+    // println("balance")
+    // // // val chars = List('(',')',')','(');
+    // // // println(chars)
+    // // val chars1 = "())(".toList
+    // // println(chars1)
+    // // // print(s"${balance(col, row)} ")
+    // // println()
+    // balanceHelper("())(".toList, 0, 0)
+
+    println("countChange")
+    print(s"${countChange(4, List(1,2))} ")
+    println()
 
   /**
    * Exercise 1
@@ -24,6 +28,7 @@ object RecFun extends RecFunInterface:
   def pascal(c: Int, r: Int): Int =
     if r == 0 || c == 0 || c == r then 1 else pascal(c - 1, r - 1) + pascal(c, r - 1)
 
+    
   /**
    * Exercise 2
    */
@@ -44,7 +49,13 @@ object RecFun extends RecFunInterface:
     // else if chars.head == ')' then balanceHelper(chars.tail, leftCnt, rightCnt + 1)
     // else balanceHelper(chars.tail, leftCnt, rightCnt)
 
+
   /**
    * Exercise 3
    */
-  def countChange(money: Int, coins: List[Int]): Int = ???
+  def countChange(money: Int, coins: List[Int]): Int = 
+    if money == 0 then return 1
+    if coins.isEmpty then return 0
+
+    if coins.head <= money then countChange(money - coins.head, coins) + countChange(money, coins.tail)
+    else countChange(money, coins.tail)
