@@ -57,6 +57,8 @@ trait FunSets extends FunSetsInterface:
 
   /**
    * Returns whether all bounded integers within `s` satisfy `p`.
+   * 
+   * Technique: Linear Recursion
    */
   def forall(s: FunSet, p: Int => Boolean): Boolean =
     def iter(a: Int): Boolean =
@@ -71,8 +73,10 @@ trait FunSets extends FunSetsInterface:
   /**
    * Returns whether there exists a bounded integer within `s`
    * that satisfies `p`.
+   * 
+   * ref: https://stackoverflow.com/questions/12681616/how-to-use-refer-to-the-negation-of-a-boolean-function-in-scala
    */
-  def exists(s: FunSet, p: Int => Boolean): Boolean = ???
+  def exists(s: FunSet, p: Int => Boolean): Boolean = !forall(s, x => !p(x))
 
   /**
    * Returns a set transformed by applying `f` to each element of `s`.

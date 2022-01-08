@@ -111,7 +111,23 @@ class FunSetSuite extends munit.FunSuite:
     new TestSets:
       val s = union(s1, union(s2, s3))
       assert(forall(s, x => x <= 3), "(1, 2, 3) <= 3")
-      assert(!forall(s, x => x % 2 == 1), "(1, 2, 3) %2 == 1");
+      assert(!forall(s, x => x % 2 == 1), "(1, 2, 3) % 2 == 1");
+  }
+
+  /* ======= 7. exists tests ======= */
+  test("exists works") {
+    new TestSets:
+      val s = union(s1, union(s2, s3))
+      assert(exists(s, x => x >= 3), "(1, 2, 3) >= 3")
+      assert(!exists(s, x => x % 6 == 5), "(1, 2, 3) % 6 == 5");
+  }
+
+  /* ======= 7. exists tests ======= */
+  test("exists works") {
+    new TestSets:
+      val s = union(s1, union(s2, s3))
+      assert(exists(s, x => x >= 3), "(1, 2, 3) >= 3")
+      assert(!exists(s, x => x % 6 == 5), "(1, 2, 3) % 6 == 5");
   }
 
   import scala.concurrent.duration.*
