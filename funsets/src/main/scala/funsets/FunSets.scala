@@ -60,13 +60,13 @@ trait FunSets extends FunSetsInterface:
    */
   def forall(s: FunSet, p: Int => Boolean): Boolean =
     def iter(a: Int): Boolean =
-      if ??? then
-        ???
-      else if ??? then
-        ???
+      if a > bound then
+        true
+      else if contains(s, a) && !p(a) then
+        false
       else
-        iter(???)
-    iter(???)
+        iter(a + 1)
+    iter(-bound)
 
   /**
    * Returns whether there exists a bounded integer within `s`

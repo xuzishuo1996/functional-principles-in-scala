@@ -106,5 +106,13 @@ class FunSetSuite extends munit.FunSuite:
       assert(!contains(s, 3), "elem 3")
   }
 
+  /* ======= 6. forall tests ======= */
+  test("forall works") {
+    new TestSets:
+      val s = union(s1, union(s2, s3))
+      assert(forall(s, x => x <= 3), "(1, 2, 3) <= 3")
+      assert(!forall(s, x => x % 2 == 1), "(1, 2, 3) %2 == 1");
+  }
+
   import scala.concurrent.duration.*
   override val munitTimeout = 10.seconds
