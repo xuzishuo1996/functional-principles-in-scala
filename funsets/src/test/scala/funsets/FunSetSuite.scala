@@ -130,5 +130,17 @@ class FunSetSuite extends munit.FunSuite:
       assert(!exists(s, x => x % 6 == 5), "(1, 2, 3) % 6 == 5");
   }
 
+  /* ======= 8. map tests ======= */
+  test("exists works") {
+    new TestSets:
+      val unionSet = union(s1, union(s2, s3))
+      val s = map(unionSet, x => 2 * x)
+      assert(contains(s, 2), "2")
+      assert(contains(s, 4), "4");
+      assert(contains(s, 6), "4");
+      assert(!contains(s, 1), "1")
+      assert(!contains(s, 3), "3");
+  }
+
   import scala.concurrent.duration.*
   override val munitTimeout = 10.seconds
