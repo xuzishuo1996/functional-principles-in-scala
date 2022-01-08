@@ -91,9 +91,9 @@ class FunSetSuite extends munit.FunSuite:
       val s12 = union(s1, s2)
       val s23 = union(s2, s3)
       val s = diff(s12, s23);
-      assert(!contains(s, 2), "Union 2")
       assert(contains(s, 1), "Union 1")
-      assert(contains(s, 3), "Union 3")
+      assert(!contains(s, 2), "Union 2")
+      assert(!contains(s, 3), "Union 3")
   }
 
   /* ======= 5. filter tests ======= */
