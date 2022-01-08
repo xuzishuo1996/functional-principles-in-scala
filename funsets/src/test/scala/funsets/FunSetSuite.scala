@@ -96,5 +96,15 @@ class FunSetSuite extends munit.FunSuite:
       assert(contains(s, 3), "Union 3")
   }
 
+  /* ======= 5. filter tests ======= */
+  test("filter contains required elements") {
+    new TestSets:
+      val unionSet = union(s1, union(s2, s3))
+      val s = filter(unionSet, x => x <= 1);
+      assert(contains(s, 1), "elem 1")
+      assert(!contains(s, 2), "elem 2")
+      assert(!contains(s, 3), "elem 3")
+  }
+
   import scala.concurrent.duration.*
   override val munitTimeout = 10.seconds
