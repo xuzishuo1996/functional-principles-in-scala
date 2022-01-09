@@ -1,6 +1,7 @@
 package objsets
 
 import TweetReader.*
+import java.util.NoSuchElementException
 
 /**
  * A class to represent tweets.
@@ -34,6 +35,8 @@ class Tweet(val user: String, val text: String, val retweets: Int):
  * [1] http://en.wikipedia.org/wiki/Binary_search_tree
  */
 abstract class TweetSet extends TweetSetInterface:
+  // https://stackoverflow.com/questions/4437373/use-of-def-val-and-var-in-scala
+  def isEmpty: Boolean
 
   /**
    * This method takes a predicate and returns a subset of all the elements
@@ -66,7 +69,7 @@ abstract class TweetSet extends TweetSetInterface:
    * Question: Should we implement this method here, or should it remain abstract
    * and be implemented in the subclasses?
    */
-  def mostRetweeted: Tweet = ???
+  def mostRetweeted: Tweet
 
   /**
    * Returns a list containing all tweets of this set, sorted by retweet count
@@ -108,7 +111,12 @@ abstract class TweetSet extends TweetSetInterface:
 
 
 class Empty extends TweetSet:
+  def isEmpty: Boolean = true
+
   def filterAcc(p: Tweet => Boolean, acc: TweetSet): TweetSet = acc // not Empty() !
+
+  def mostRetweeted: Tweet = 
+    throw new NoSuchElementException
 
   /**
    * The following methods are already implemented
@@ -126,6 +134,7 @@ class Empty extends TweetSet:
  * Represented as a binary tree
  */
 class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet:
+  def isEmpty: Boolean = false
 
   /**
    *  Note: incl() returns a new TweetSet
@@ -133,6 +142,14 @@ class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet:
   def filterAcc(p: Tweet => Boolean, acc: TweetSet): TweetSet = 
     if p(elem) then right.filterAcc(p, left.filterAcc(p, acc.incl(elem)))
     else right.filterAcc(p, left.filterAcc(p, acc))
+
+  def mostRetweeted: Tweet = 
+    def most(t1: Tweet, t2: Tweet): Tweet = 
+      if t1.retweets >= t2.retweets then t1 else t2
+    if (left.isEmpty && right.isEmpty) then elem
+    else if left.isEmpty then most(elem, right.mostRetweeted)
+    else if right.isEmpty then most(elem, left.mostRetweeted)
+    else most(elem, most(left.mostRetweeted, right.mostRetweeted))
 
   /**
    * The following methods are already implemented
