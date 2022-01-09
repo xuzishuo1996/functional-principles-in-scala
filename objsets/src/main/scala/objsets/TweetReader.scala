@@ -1,5 +1,6 @@
 package objsets
 
+// object: singleton pattern
 object TweetReader:
 
   object ParseTweets:
@@ -25,6 +26,10 @@ object TweetReader:
         Tweet(user, text.toString, retweets.toString.toDouble.toInt)
 
   def toTweetSet(l: List[Tweet]): TweetSet =
+    // 1. foldLeft: http://allaboutscala.com/tutorials/chapter-8-beginner-tutorial-using-scala-collection-functions/scala-foldleft-example/
+    // 2. currying: Methods may have multiple parameter lists. 
+    //    https://docs.scala-lang.org/tour/multiple-parameter-lists.html
+    // 3. Scala allows the use of underscores (denoted as '_') to be used as placeholders for one or more parameters.
     l.foldLeft(Empty(): TweetSet)(_.incl(_))
 
   def unparseToData(tws: List[Tweet]): String =

@@ -4,6 +4,8 @@ import TweetReader.*
 
 /**
  * A class to represent tweets.
+ * 
+ * val: is a field of the class, visible from outside the class
  */
 class Tweet(val user: String, val text: String, val retweets: Int):
   override def toString: String =
@@ -40,7 +42,7 @@ abstract class TweetSet extends TweetSetInterface:
    * Question: Can we implement this method here, or should it remain abstract
    * and be implemented in the subclasses?
    */
-  def filter(p: Tweet => Boolean): TweetSet = ???
+  def filter(p: Tweet => Boolean): TweetSet = filterAcc(p, Empty())
 
   /**
    * This is a helper method for `filter` that propagates the accumulated tweets.
@@ -104,8 +106,9 @@ abstract class TweetSet extends TweetSetInterface:
    */
   def foreach(f: Tweet => Unit): Unit
 
+
 class Empty extends TweetSet:
-  def filterAcc(p: Tweet => Boolean, acc: TweetSet): TweetSet = ???
+  def filterAcc(p: Tweet => Boolean, acc: TweetSet): TweetSet = Empty()
 
   /**
    * The following methods are already implemented
@@ -119,10 +122,16 @@ class Empty extends TweetSet:
 
   def foreach(f: Tweet => Unit): Unit = ()
 
+/**
+ * Represented as a binary tree
+ */
 class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet:
 
-  def filterAcc(p: Tweet => Boolean, acc: TweetSet): TweetSet = ???
-
+  def filterAcc(p: Tweet => Boolean, acc: TweetSet): TweetSet = 
+    if p(elem) then acc.incl(elem)
+    left.filterAcc(p, acc)
+    right.filterAcc(p, acc)
+    acc
 
   /**
    * The following methods are already implemented
@@ -155,6 +164,7 @@ class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet:
     f(elem)
     left.foreach(f)
     right.foreach(f)
+
 
 trait TweetList:
   def head: Tweet
