@@ -108,7 +108,7 @@ abstract class TweetSet extends TweetSetInterface:
 
 
 class Empty extends TweetSet:
-  def filterAcc(p: Tweet => Boolean, acc: TweetSet): TweetSet = Empty()
+  def filterAcc(p: Tweet => Boolean, acc: TweetSet): TweetSet = acc // not Empty() !
 
   /**
    * The following methods are already implemented
@@ -127,11 +127,12 @@ class Empty extends TweetSet:
  */
 class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet:
 
+  /**
+   *  Note: incl() returns a new TweetSet
+   */
   def filterAcc(p: Tweet => Boolean, acc: TweetSet): TweetSet = 
-    if p(elem) then acc.incl(elem)
-    left.filterAcc(p, acc)
-    right.filterAcc(p, acc)
-    acc
+    if p(elem) then right.filterAcc(p, left.filterAcc(p, acc.incl(elem)))
+    else right.filterAcc(p, left.filterAcc(p, acc))
 
   /**
    * The following methods are already implemented
