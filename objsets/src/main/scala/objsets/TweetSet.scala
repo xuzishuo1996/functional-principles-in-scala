@@ -58,8 +58,13 @@ abstract class TweetSet extends TweetSetInterface:
    * Question: Should we implement this method here, or should it remain abstract
    * and be implemented in the subclasses?
    */
-  def union(that: TweetSet): TweetSet = ???
+  def union(that: TweetSet): TweetSet = 
+    if isEmpty then return that
+    else if that.isEmpty then return this
+    unionAcc(that, that)
 
+  def unionAcc(that: TweetSet, acc: TweetSet): TweetSet
+    
   /**
    * Returns the tweet from this set which has the greatest retweet count.
    *
@@ -118,6 +123,8 @@ class Empty extends TweetSet:
   def mostRetweeted: Tweet = 
     throw new NoSuchElementException
 
+  def unionAcc(that: TweetSet, acc: TweetSet): TweetSet = acc
+
   /**
    * The following methods are already implemented
    */
@@ -142,6 +149,10 @@ class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet:
   def filterAcc(p: Tweet => Boolean, acc: TweetSet): TweetSet = 
     if p(elem) then right.filterAcc(p, left.filterAcc(p, acc.incl(elem)))
     else right.filterAcc(p, left.filterAcc(p, acc))
+
+  def unionAcc(that: TweetSet, acc: TweetSet): TweetSet = 
+    if (that.contains(elem)) then right.unionAcc(that, left.unionAcc(that, acc))
+    else right.unionAcc(that, left.unionAcc(that, acc.incl(elem)))
 
   def mostRetweeted: Tweet = 
     def most(t1: Tweet, t2: Tweet): Tweet = 
