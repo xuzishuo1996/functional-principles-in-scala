@@ -85,7 +85,9 @@ abstract class TweetSet extends TweetSetInterface:
    * Question: Should we implement this method here, or should it remain abstract
    * and be implemented in the subclasses?
    */
-  def descendingByRetweet: TweetList = ???
+  def descendingByRetweet: TweetList = descendingByRetweetAcc(this, Nil)
+
+  def descendingByRetweetAcc(set: TweetSet, acc: TweetList): TweetList
 
   /**
    * The following methods are already implemented
@@ -120,10 +122,12 @@ class Empty extends TweetSet:
 
   def filterAcc(p: Tweet => Boolean, acc: TweetSet): TweetSet = acc // not Empty() !
 
+  def unionAcc(that: TweetSet, acc: TweetSet): TweetSet = acc
+
   def mostRetweeted: Tweet = 
     throw new NoSuchElementException
 
-  def unionAcc(that: TweetSet, acc: TweetSet): TweetSet = acc
+  def descendingByRetweetAcc(set: TweetSet, acc: TweetList): TweetList = Nil
 
   /**
    * The following methods are already implemented
@@ -161,6 +165,11 @@ class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet:
     else if left.isEmpty then most(elem, right.mostRetweeted)
     else if right.isEmpty then most(elem, left.mostRetweeted)
     else most(elem, most(left.mostRetweeted, right.mostRetweeted))
+
+  def descendingByRetweetAcc(set: TweetSet, acc: TweetList): TweetList = 
+    val most = set.mostRetweeted
+    val newSet = set.remove(most)
+    descendingByRetweetAcc(newSet, Cons(most, acc))
 
   /**
    * The following methods are already implemented
