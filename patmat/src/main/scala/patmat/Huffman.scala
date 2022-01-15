@@ -256,7 +256,14 @@ trait Huffman extends HuffmanInterface:
    * use it in the `convert` method above, this merge method might also do some transformations
    * on the two parameter code tables.
    */
-  def mergeCodeTables(a: CodeTable, b: CodeTable): CodeTable = ???
+  def mergeCodeTables(a: CodeTable, b: CodeTable): CodeTable = 
+    // val lt = (x: (Char, List[Bit]), y: (Char, List[Bit])) => x._1 < y._1
+    // val sortedA = msort(a)(lt)
+    // val sortedB = msort(b)(lt)
+    def mergeCodeTablesWithAcc(t: CodeTable, prefix: Bit, acc: CodeTable) : CodeTable = t match
+        case Nil => acc
+        case x :: xs => mergeCodeTablesWithAcc(t.tail, prefix, acc :+ (x._1, prefix +: x._2))
+    mergeCodeTablesWithAcc(a, 0, mergeCodeTablesWithAcc(b, 1, Nil))
 
   /**
    * This function encodes `text` according to the code tree `tree`.
