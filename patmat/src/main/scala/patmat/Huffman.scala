@@ -88,16 +88,32 @@ trait Huffman extends HuffmanInterface:
    */
   // Approach 1: insertion sort: O(N^2)
   // invariant: the tail is sorted
-  def insert(x: (Char, Int), freqs: List[(Char, Int)]): List[(Char, Int)] = freqs match
-    case List() => List(x)
-    case y :: ys => if x._2 <= y._2 then x :: insert(y, ys) else y :: insert(x, ys)
+  // def insert(x: (Char, Int), freqs: List[(Char, Int)]): List[(Char, Int)] = freqs match
+  //   case List() => List(x)
+  //   case y :: ys => if x._2 <= y._2 then x :: insert(y, ys) else y :: insert(x, ys)
   
-  def makeOrderedPairList(freqs: List[(Char, Int)]): List[(Char, Int)] = freqs match 
-    case List() => List()
-    case x :: xs => insert(x, xs)
-  
+  // def makeOrderedPairList(freqs: List[(Char, Int)]): List[(Char, Int)] = freqs match 
+  //   case List() => List()
+  //   case x :: xs => insert(x, xs)
+
+  // def makeOrderedLeafList(freqs: List[(Char, Int)]): List[Leaf] =
+  //   makeOrderedPairList(freqs).map(pair => Leaf(pair._1, pair._2))
+
+  // Approach 2: merge sort: O(Nlog(N))
+  def msort[T](lst: List[T])(lt: (T, T) => Boolean): List[T] =
+    val mid = lst.length / 2
+    if mid == 0 then lst
+    else 
+      def merge(xs: List[T], ys: List[T]): List[T]= (xs, ys) match
+        case (Nil, ys) => ys
+        case (xs, Nil) => xs
+        case (x :: xs1, y :: ys1) =>
+          if lt(x, y) then x :: merge(xs1, ys) else y :: merge(xs, ys1)
+      val (first, second) = lst.splitAt(mid)
+      merge(msort(first)(lt), msort(second)(lt))
+      
   def makeOrderedLeafList(freqs: List[(Char, Int)]): List[Leaf] =
-    makeOrderedPairList(freqs).map(pair => Leaf(pair._1, pair._2))
+    msort(freqs)((p1, p2) => p1._2 <= p2._2).map(pair => Leaf(pair._1, pair._2))
 
   /**
    * Checks whether the list `trees` contains only one single code tree.
