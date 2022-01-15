@@ -215,18 +215,18 @@ trait Huffman extends HuffmanInterface:
    * into a sequence of bits.
    */
   def encode(tree: CodeTree)(text: List[Char]): List[Bit] = 
-    def getBits(subtree: CodeTree, acc: List[Bit])(value: Char): List[Bit] = subtree match
-      case Leaf(char, _) => if char == value then acc :+ char else Nil
+    def getBits(subtree: CodeTree)(char: Char): List[Bit] = subtree match
+      case Leaf(_, _) => Nil
       case Fork(left, right, _, _) =>
-        val leftVal = getBits(left, acc)(value)
-        val rightVal = getBits(right, acc)(value)
-        if leftVal != Nil then leftVal else rightVal
+        if chars(left).contains(char) then 0 :: getBits(left)(char) else 1 :: getBits(right)(char)
 
     def encodeWithAcc(subtree: CodeTree, acc: List[Bit])(subText: List[Char]): List[Bit] = subText match
       case Nil => acc
-      case x :: xs => encodeWithAcc(subtree, getBits(subtree, acc)(x))(xs)
+      case x :: xs => encodeWithAcc(subtree, acc ++ getBits(subtree)(x))(xs)
 
     encodeWithAcc(tree, Nil)(text)
+    // text flatMap getBits(tree, Nil)
+
 
   // Part 4b: Encoding using code table
 
