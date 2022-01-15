@@ -180,9 +180,13 @@ trait Huffman extends HuffmanInterface:
    */
   def decode(tree: CodeTree, bits: List[Bit]): List[Char] = 
     def decodeWithAcc(subTree: CodeTree, bits: List[Bit], acc: List[Char]): List[Char] = subTree match
-      case t: Leaf => decodeWithAcc(tree, bits, acc ++ chars(t))
-      case t: Fork => 
-        if bits.head == 0 then decodeWithAcc(t.left, bits.tail, acc) else decodeWithAcc(t.right, bits.tail, acc)
+      // or t: Leaf, in case no need of fields in Leaf
+      case Leaf(char, _) => bits match 
+        case Nil => acc :+ char // append an elem to the lst
+        case _ => decodeWithAcc(tree, bits, acc :+ char)
+      case Fork(left, right, _, _) => 
+        decodeWithAcc(if bits.head == 0 then left else right, bits.tail, acc)
+        // if bits.head == 0 then decodeWithAcc(left, bits.tail, acc) else decodeWithAcc(right, bits.tail, acc)
     decodeWithAcc(tree, bits, Nil)
 
   /**
