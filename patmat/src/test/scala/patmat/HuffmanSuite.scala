@@ -62,6 +62,13 @@ class HuffmanSuite extends munit.FunSuite:
   test("decode and encode a very short text should be identity (10pts)") {
     new TestTrees:
       assertEquals(decode(t1, encode(t1)("ab".toList)), "ab".toList)
+      assertEquals(decode(t2, encode(t2)("addba".toList)), "addba".toList)
+  }
+
+  test("decode and quick encode a very short text should be identity") {
+    new TestTrees:
+      assertEquals(decode(t1, quickEncode(t1)("ab".toList)), "ab".toList)
+      assertEquals(decode(t2, quickEncode(t2)("addba".toList)), "addba".toList)
   }
 
 
