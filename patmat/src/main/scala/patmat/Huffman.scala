@@ -121,7 +121,7 @@ trait Huffman extends HuffmanInterface:
   def singleton(trees: List[CodeTree]): Boolean = trees match
     case List() => false
     case x :: Nil => true
-    case x :: xs :: y => false
+    case x :: y :: ys => false
 
   /**
    * The parameter `trees` of this function is a list of code trees ordered
@@ -135,7 +135,15 @@ trait Huffman extends HuffmanInterface:
    * If `trees` is a list of less than two elements, that list should be returned
    * unchanged.
    */
-  def combine(trees: List[CodeTree]): List[CodeTree] = ???
+  def combine(trees: List[CodeTree]): List[CodeTree] = trees match
+    case List() => trees
+    case x :: Nil => trees
+    case x :: y :: Nil => 
+      List(makeCodeTree(x, y))
+    case x :: y :: z :: zs =>
+      val combined = makeCodeTree(x, y)
+      if (weight(combined) <= weight(z)) combined :: z :: zs
+      else z :: combine(combined :: zs)
 
   /**
    * This function will be called in the following way:
