@@ -249,7 +249,9 @@ trait Huffman extends HuffmanInterface:
    * a valid code tree that can be represented as a code table. Using the code tables of the
    * sub-trees, think of how to build the code table for the entire tree.
    */
-  def convert(tree: CodeTree): CodeTable = ???
+  def convert(tree: CodeTree): CodeTable = tree match
+    case Leaf(char, _) => List((char, Nil))
+    case Fork(left, right, _, _) => mergeCodeTables(convert(left), convert(right))
 
   /**
    * This function takes two code tables and merges them into one. Depending on how you
@@ -272,10 +274,10 @@ trait Huffman extends HuffmanInterface:
    * and then uses it to perform the actual encoding.
    */
   def quickEncode(tree: CodeTree)(text: List[Char]): List[Bit] = 
-    val table = convert(tree)
+    val table = convert(tree) // or val converter = convert(tree)_    converter(x) in case x :: xs
     def quickEncodeWithAcc(text: List[Char], acc: List[Bit]) : List[Bit] = text match 
       case Nil => acc
-      case x :: xs => quickEncodeWithAcc(text.tail, acc ++ codeBits(table)(text.head))
+      case x :: xs => quickEncodeWithAcc(xs, acc ++ codeBits(table)(x))
     quickEncodeWithAcc(text, Nil)
 
 object Huffman extends Huffman
