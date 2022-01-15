@@ -26,7 +26,7 @@ trait Huffman extends HuffmanInterface:
     case Fork(_, _, _, weight) => weight
 
   def chars(tree: CodeTree): List[Char] = tree match // tree match ...
-    case Leaf(char, _) => char :: Nil
+    case Leaf(char, _) => char :: Nil // or List(char)
     case Fork(left, right, chars, _) => chars
 
   def makeCodeTree(left: CodeTree, right: CodeTree) =
@@ -68,7 +68,16 @@ trait Huffman extends HuffmanInterface:
    *       println("integer is  : "+ theInt)
    *   }
    */
-  def times(chars: List[Char]): List[(Char, Int)] = ???
+  def times(chars: List[Char]): List[(Char, Int)] = 
+    def incFreqByOne(char: Char, acc: List[(Char, Int)]): List[(Char, Int)] = acc match
+      case pair :: xs => if (char == pair._1) (char, pair._2 + 1) :: xs else pair :: incFreqByOne(char, xs) 
+      case Nil => (char, 1) :: Nil
+    
+    def getTimes(chars: List[Char], acc: List[(Char, Int)]): List[(Char, Int)] = chars match
+      case char :: xs =>  getTimes(xs, incFreqByOne(char, acc))
+      case Nil => acc // Not Nil！
+
+    getTimes(chars, Nil)
 
   /**
    * Returns a list of `Leaf` nodes for a given frequency table `freqs`.

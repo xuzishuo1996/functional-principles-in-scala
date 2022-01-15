@@ -8,22 +8,26 @@ class HuffmanSuite extends munit.FunSuite:
     val t2 = Fork(Fork(Leaf('a',2), Leaf('b',3), List('a','b'), 5), Leaf('d',4), List('a','b','d'), 9)
   }
 
-
+  // Part 1
   test("weight of a larger tree (10pts)") {
     new TestTrees:
       assertEquals(weight(t1), 5)
   }
-
 
   test("chars of a larger tree (10pts)") {
     new TestTrees:
       assertEquals(chars(t2), List('a','b','d'))
   }
 
+  // Part 2
   test("string2chars hello world") {
     assertEquals(string2Chars("hello, world"), List('h', 'e', 'l', 'l', 'o', ',', ' ', 'w', 'o', 'r', 'l', 'd'))
   }
 
+  test("times hello world") {
+    val freqLst = times(string2Chars("helloworld"))
+    assertEquals(List(('h', 1), ('e', 1), ('l', 3), ('o', 2), ('w', 1), ('r', 1), ('d', 1)), freqLst)
+  }
 
   test("make ordered leaf list for some frequency table (15pts)") {
     assertEquals(makeOrderedLeafList(List(('t', 2), ('e', 1), ('x', 3))), List(Leaf('e',1), Leaf('t',2), Leaf('x',3)))
