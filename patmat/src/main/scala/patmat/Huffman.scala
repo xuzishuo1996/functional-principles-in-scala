@@ -139,12 +139,12 @@ trait Huffman extends HuffmanInterface:
   def combine(trees: List[CodeTree]): List[CodeTree] = trees match
     case List() => trees
     case x :: Nil => trees
-    case x :: y :: Nil => 
-      List(makeCodeTree(x, y))
-    case x :: y :: z :: zs =>
-      val combined = makeCodeTree(x, y)
-      if (weight(combined) <= weight(z)) combined :: z :: zs
-      else z :: combine(combined :: zs)
+    case x :: y :: zs => 
+      val merged = makeCodeTree(x, y)
+      def insert(x: CodeTree, remaining: List[CodeTree]): List[CodeTree] = remaining match
+        case List() => List(x)
+        case y :: ys => if weight(x) <= weight(y) then x :: remaining else y :: insert(x, ys)
+      insert(merged, zs)
 
   /**
    * This function will be called in the following way:
