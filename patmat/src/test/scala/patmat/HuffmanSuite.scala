@@ -26,13 +26,26 @@ class HuffmanSuite extends munit.FunSuite:
 
   test("times hello world") {
     val freqLst = times(string2Chars("helloworld"))
-    assertEquals(List(('h', 1), ('e', 1), ('l', 3), ('o', 2), ('w', 1), ('r', 1), ('d', 1)), freqLst)
+    assertEquals(freqLst, List(('h', 1), ('e', 1), ('l', 3), ('o', 2), ('w', 1), ('r', 1), ('d', 1)))
   }
 
   test("make ordered leaf list for some frequency table (15pts)") {
     assertEquals(makeOrderedLeafList(List(('t', 2), ('e', 1), ('x', 3))), List(Leaf('e',1), Leaf('t',2), Leaf('x',3)))
   }
 
+  test("singleton") {
+    assertEquals(singleton(List(Leaf('e', 1))), true)
+    assertEquals(singleton(List(
+      Fork(
+        Fork(Leaf('e', 1), Leaf('t', 2), List('e', 't'), 3), 
+        Leaf('x', 4), 
+        List('e', 't', 'x'), 
+        7
+      )
+    )), true)
+    assertEquals(singleton(List()), false)
+    assertEquals(singleton(List(Fork(Leaf('e', 1), Leaf('t', 2), List('e', 't'), 3), Leaf('x', 4))), false)
+  }  
 
   test("combine of some leaf list (15pts)") {
     val leaflist = List(Leaf('e', 1), Leaf('t', 2), Leaf('x', 4))
