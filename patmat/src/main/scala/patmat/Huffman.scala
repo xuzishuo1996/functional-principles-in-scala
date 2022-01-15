@@ -32,7 +32,7 @@ trait Huffman extends HuffmanInterface:
   def makeCodeTree(left: CodeTree, right: CodeTree) =
     Fork(left, right, chars(left) ::: chars(right), weight(left) + weight(right))
 
-    
+
   // Part 2: Generating Huffman trees
 
   /**
@@ -178,7 +178,12 @@ trait Huffman extends HuffmanInterface:
    * This function decodes the bit sequence `bits` using the code tree `tree` and returns
    * the resulting list of characters.
    */
-  def decode(tree: CodeTree, bits: List[Bit]): List[Char] = ???
+  def decode(tree: CodeTree, bits: List[Bit]): List[Char] = 
+    def decodeWithAcc(subTree: CodeTree, bits: List[Bit], acc: List[Char]): List[Char] = subTree match
+      case t: Leaf => decodeWithAcc(tree, bits, acc ++ chars(t))
+      case t: Fork => 
+        if bits.head == 0 then decodeWithAcc(t.left, bits.tail, acc) else decodeWithAcc(t.right, bits.tail, acc)
+    decodeWithAcc(tree, bits, Nil)
 
   /**
    * A Huffman coding tree for the French language.
@@ -196,7 +201,7 @@ trait Huffman extends HuffmanInterface:
   /**
    * Write a function that returns the decoded secret
    */
-  def decodedSecret: List[Char] = ???
+  def decodedSecret: List[Char] = decode(frenchCode, secret)
 
 
   // Part 4a: Encoding using Huffman tree
