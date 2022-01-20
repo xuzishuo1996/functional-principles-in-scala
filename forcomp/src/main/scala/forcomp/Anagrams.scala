@@ -48,7 +48,7 @@ object Anagrams extends AnagramsInterface:
     //   yield wordOccurrences(w)
     // val emptyOccurrences = ('a' to 'z').map(c => (c, 0)).toList
     // wordsOccurrences.foldLeft(emptyOccurrences)()
-
+ 
   /** The `dictionaryByOccurrences` is a `Map` from different occurrences to a sequence of all
    *  the words that have that occurrence count.
    *  This map serves as an easy way to obtain all the anagrams of a word given its occurrence list.
@@ -64,7 +64,9 @@ object Anagrams extends AnagramsInterface:
    *    List(('a', 1), ('e', 1), ('t', 1)) -> Seq("ate", "eat", "tea")
    *
    */
-  lazy val dictionaryByOccurrences: Map[Occurrences, List[Word]] = ???
+  lazy val dictionaryByOccurrences: Map[Occurrences, List[Word]] = 
+    dictionary groupBy wordOccurrences
+    // dictionary.groupBy(w => wordOccurrences(w))
 
   /** Returns all the anagrams of a given word. */
   def wordAnagrams(word: Word): List[Word] = ???
