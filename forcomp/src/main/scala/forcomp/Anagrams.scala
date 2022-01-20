@@ -98,7 +98,20 @@ object Anagrams extends AnagramsInterface:
    *  Note that the order of the occurrence list subsets does not matter -- the subsets
    *  in the example above could have been displayed in some other order.
    */
-  def combinations(occurrences: Occurrences): List[Occurrences] = ???
+  def combinations(occurrences: Occurrences): List[Occurrences] = 
+    def combinationsHelper(occurrences: Occurrences): List[Occurrences] = occurrences match
+      case Nil => Nil  // case Nil equals case List()
+      // case x :: Nil => List(List(), occurrences)
+      case x :: y => 
+        val withoutFirst = combinations(y)
+        val onlyFirst = 
+          for i <- 1 to x._2
+          yield List((x._1, i))
+        val withFirst = 
+          for i <- 1 to x._2
+          yield withoutFirst.map(lst => lst :+ (x._1, i))
+        (withoutFirst ++ onlyFirst ++ withFirst.flatten)
+    List() +: combinationsHelper(occurrences)
 
   /** Subtracts occurrence list `y` from occurrence list `x`.
    *
