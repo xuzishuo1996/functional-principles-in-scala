@@ -12,7 +12,7 @@ class AnagramsSuite extends munit.FunSuite:
   }
 
 
-  test("sentenceOccurrences: abcd e (5pts)".ignore) {
+  test("sentenceOccurrences: abcd e (5pts)") {
     assertEquals(sentenceOccurrences(List("abcd", "e")), List(('a', 1), ('b', 1), ('c', 1), ('d', 1), ('e', 1)))
   }
 

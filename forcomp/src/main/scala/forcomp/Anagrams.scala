@@ -42,7 +42,12 @@ object Anagrams extends AnagramsInterface:
     w.groupBy(_.toLower).map((k, v) => (k, v.length)).toList.sortWith((p1, p2) => p1._1 < p2._1)
 
   /** Converts a sentence into its character occurrence list. */
-  def sentenceOccurrences(s: Sentence): Occurrences = ???
+  def sentenceOccurrences(s: Sentence): Occurrences = wordOccurrences(s.mkString)
+    // val wordsOccurrences =
+    //   for w <- s
+    //   yield wordOccurrences(w)
+    // val emptyOccurrences = ('a' to 'z').map(c => (c, 0)).toList
+    // wordsOccurrences.foldLeft(emptyOccurrences)()
 
   /** The `dictionaryByOccurrences` is a `Map` from different occurrences to a sequence of all
    *  the words that have that occurrence count.

@@ -14,3 +14,5 @@ logs/
 *.csv
 *.dat
 .bsp/
+
+src/*.sc
