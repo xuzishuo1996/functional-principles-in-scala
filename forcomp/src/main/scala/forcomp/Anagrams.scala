@@ -97,7 +97,16 @@ object Anagrams extends AnagramsInterface:
    *
    *  Note that the order of the occurrence list subsets does not matter -- the subsets
    *  in the example above could have been displayed in some other order.
+   * 
+   *  Note: inter - list order does not matter, but inner list order matters
    */
+  // def combinations(occurrences: Occurrences): List[Occurrences] = occurrences match
+  //   case Nil => List(List())
+  //   case (char, freq) :: occurrences =>
+  //     for res <- combinations(occurrences); i <- 0 to freq
+  //     yield
+  //       if i == 0 then res
+  //       else ((char, i) +: res) //.sortBy(_._1) // if res :+ (char, i), then out of order, need sort
   def combinations(occurrences: Occurrences): List[Occurrences] = 
     def combinationsHelper(occurrences: Occurrences): List[Occurrences] = occurrences match
       case Nil => Nil  // case Nil equals case List()
@@ -109,10 +118,10 @@ object Anagrams extends AnagramsInterface:
           yield List((x._1, i))
         val withFirst = 
           for i <- 1 to x._2
-          yield withoutFirst.map(lst => lst :+ (x._1, i))
+          yield withoutFirst.map(lst => (x._1, i) +: lst)
         (withoutFirst ++ onlyFirst ++ withFirst.flatten)
     List() +: combinationsHelper(occurrences)
-
+  
   /** Subtracts occurrence list `y` from occurrence list `x`.
    *
    *  The precondition is that the occurrence list `y` is a subset of
