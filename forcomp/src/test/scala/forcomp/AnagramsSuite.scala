@@ -22,11 +22,11 @@ class AnagramsSuite extends munit.FunSuite:
   }
 
 
-  test("wordAnagrams married (2pts)".ignore) {
+  test("wordAnagrams married (2pts)") {
     assertEquals(wordAnagrams("married").toSet, Set("married", "admirer"))
   }
 
-  test("wordAnagrams player (2pts)".ignore) {
+  test("wordAnagrams player (2pts)") {
     assertEquals(wordAnagrams("player").toSet, Set("parley", "pearly", "player", "replay"))
   }
 
