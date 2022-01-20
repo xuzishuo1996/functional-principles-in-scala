@@ -113,8 +113,12 @@ object Anagrams extends AnagramsInterface:
    *  https://www.scala-lang.org/api/2.13.8/scala/collection/Seq.html
    */
   def subtract(x: Occurrences, y: Occurrences): Occurrences = 
-    (x ++ y.map(c => (c._1, -c._2))).groupBy(_._1).mapValues(_.map(_._2).sum).toList.filter(_._2 != 0).sorted
-
+    (x ++ y.map(c => (c._1, -c._2)))
+    .groupBy(_._1)  // transform to Mao according to the Char Map(('a', List(('a', 1), ('a', -1))), ('a', List(('b', 2), ('b', -1))))
+    .mapValues(_.map(_._2).sum) // map the value of each entry, i.e., each List
+    .toList // from Map to List
+    .filter(_._2 != 0)  // remove chars with zero freq
+    .sorted
 
   /** Returns a list of all anagram sentences of the given sentence.
    *
