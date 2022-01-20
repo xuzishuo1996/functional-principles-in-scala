@@ -182,7 +182,15 @@ object Anagrams extends AnagramsInterface:
    *
    *  Note: There is only one anagram of an empty sentence.
    */
-  def sentenceAnagrams(sentence: Sentence): List[Sentence] = ???
+  def sentenceAnagrams(sentence: Sentence): List[Sentence] = 
+    def sentenceAnagramsHeler(occurrences: Occurrences): List[Sentence] = occurrences match
+      case Nil => List(Nil)
+      case _ => 
+        (for curr <- combinations(occurrences); word <- dictionaryByOccurrences.getOrElse(curr, List())
+          if word.length > 0
+          yield sentenceAnagramsHeler(subtract(occurrences, curr)).map(word :: _)
+        ).flatten
+    sentenceAnagramsHeler(sentenceOccurrences(sentence))
 
 object Dictionary:
   def loadDictionary: List[String] =

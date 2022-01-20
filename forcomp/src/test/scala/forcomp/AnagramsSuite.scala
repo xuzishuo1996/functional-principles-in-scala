@@ -62,12 +62,12 @@ class AnagramsSuite extends munit.FunSuite:
   }
 
 
-  test("sentence anagrams: [] (10pts)".ignore) {
+  test("sentence anagrams: [] (10pts)") {
     val sentence = List()
     assertEquals(sentenceAnagrams(sentence), List(Nil))
   }
 
-  test("sentence anagrams: Linux rulez (10pts)".ignore) {
+  test("sentence anagrams: Linux rulez (10pts)") {
     val sentence = List("Linux", "rulez")
     val anas = List(
       List("Rex", "Lin", "Zulu"),
