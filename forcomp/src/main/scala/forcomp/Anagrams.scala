@@ -34,8 +34,12 @@ object Anagrams extends AnagramsInterface:
    *  same character, and are represented as a lowercase character in the occurrence list.
    *
    *  Note: you must use `groupBy` to implement this method!
+   * https://www.scala-lang.org/api/2.13.8/scala/collection/StringOps.html
+   * https://www.geeksforgeeks.org/scala-map-tolist-method-with-example/
+   * https://www.scala-lang.org/api/2.13.8/scala/collection/immutable/List.html?search=sortWith
    */
-  def wordOccurrences(w: Word): Occurrences = ???
+  def wordOccurrences(w: Word): Occurrences = 
+    w.groupBy(_.toLower).map((k, v) => (k, v.length)).toList.sortWith((p1, p2) => p1._1 < p2._1)
 
   /** Converts a sentence into its character occurrence list. */
   def sentenceOccurrences(s: Sentence): Occurrences = ???
