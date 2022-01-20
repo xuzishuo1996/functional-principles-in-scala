@@ -185,10 +185,13 @@ object Anagrams extends AnagramsInterface:
   def sentenceAnagrams(sentence: Sentence): List[Sentence] = 
     def sentenceAnagramsHeler(occurrences: Occurrences): List[Sentence] = occurrences match
       case Nil => List(Nil)
-      case _ => 
-        (for curr <- combinations(occurrences); word <- dictionaryByOccurrences.getOrElse(curr, List())
+      case _ => (
+        for {
+          curr <- combinations(occurrences);
+          word <- dictionaryByOccurrences.getOrElse(curr, List())
           if word.length > 0
-          yield sentenceAnagramsHeler(subtract(occurrences, curr)).map(word :: _)
+        }
+        yield sentenceAnagramsHeler(subtract(occurrences, curr)).map(word :: _)
         ).flatten
     sentenceAnagramsHeler(sentenceOccurrences(sentence))
 
