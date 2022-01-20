@@ -100,27 +100,27 @@ object Anagrams extends AnagramsInterface:
    * 
    *  Note: inter - list order does not matter, but inner list order matters
    */
-  // def combinations(occurrences: Occurrences): List[Occurrences] = occurrences match
-  //   case Nil => List(List())
-  //   case (char, freq) :: occurrences =>
-  //     for res <- combinations(occurrences); i <- 0 to freq
-  //     yield
-  //       if i == 0 then res
-  //       else ((char, i) +: res) //.sortBy(_._1) // if res :+ (char, i), then out of order, need sort
-  def combinations(occurrences: Occurrences): List[Occurrences] = 
-    def combinationsHelper(occurrences: Occurrences): List[Occurrences] = occurrences match
-      case Nil => Nil  // case Nil equals case List()
-      // case x :: Nil => List(List(), occurrences)
-      case x :: y => 
-        val withoutFirst = combinations(y)
-        val onlyFirst = 
-          for i <- 1 to x._2
-          yield List((x._1, i))
-        val withFirst = 
-          for i <- 1 to x._2
-          yield withoutFirst.map(lst => (x._1, i) +: lst)
-        (withoutFirst ++ onlyFirst ++ withFirst.flatten)
-    List() +: combinationsHelper(occurrences)
+  def combinations(occurrences: Occurrences): List[Occurrences] = occurrences match
+    case Nil => List(List())
+    case (char, freq) :: occurrences =>
+      for res <- combinations(occurrences); i <- 0 to freq
+      yield
+        if i == 0 then res
+        else ((char, i) +: res) //.sortBy(_._1) // if res :+ (char, i), then out of order, need sort
+  // def combinations(occurrences: Occurrences): List[Occurrences] = 
+  //   def combinationsHelper(occurrences: Occurrences): List[Occurrences] = occurrences match
+  //     case Nil => Nil  // case Nil equals case List()
+  //     // case x :: Nil => List(List(), occurrences)
+  //     case x :: y => 
+  //       val withoutFirst = combinations(y)
+  //       val onlyFirst = 
+  //         for i <- 1 to x._2
+  //         yield List((x._1, i))
+  //       val withFirst = 
+  //         for i <- 1 to x._2
+  //         yield withoutFirst.map(lst => (x._1, i) +: lst)
+  //       (withoutFirst ++ onlyFirst ++ withFirst.flatten)
+  //   List() +: combinationsHelper(occurrences)
   
   /** Subtracts occurrence list `y` from occurrence list `x`.
    *
